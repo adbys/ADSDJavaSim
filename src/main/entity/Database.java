@@ -20,6 +20,9 @@ public class Database extends Sim_entity {
 	private Sim_port produtoOut;
 	private Sim_port usuarioOut;
 	
+	private Sim_port bdIn;
+	private Sim_port bdOut;
+
 	private Sim_normal_obj delay;
 	
 	public Database(String name) {
@@ -37,6 +40,9 @@ public class Database extends Sim_entity {
 		this.produtoOut = new Sim_port("ProdutoOut");
 		this.usuarioOut = new Sim_port("UsuarioOut");
 		
+		this.bdOut = new Sim_port("BdOut");
+		this.bdIn = new Sim_port("BdIn");
+		
 		add_port(this.estabelecimentoIn);
 		add_port(this.pedidoIn);
 		add_port(this.promocaoIn);
@@ -48,6 +54,9 @@ public class Database extends Sim_entity {
 		add_port(this.promocaoOut);
 		add_port(this.produtoOut);
 		add_port(this.usuarioOut);
+		
+		add_port(this.bdOut);
+		add_port(this.bdIn);
 		
 		delay = new Sim_normal_obj("Delay", 10, 100);
         add_generator(delay);

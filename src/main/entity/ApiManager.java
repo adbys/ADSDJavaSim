@@ -29,9 +29,14 @@ public class ApiManager extends Sim_entity {
 	private Sim_normal_obj delay;
 	private Sim_random_obj prob;
 	
+	private Sim_port apiManagerIn;
+	private Sim_port apiManagerOut;
 	
 	public ApiManager(String name) {
 		super(name);
+		
+		this.apiManagerOut = new Sim_port("ApiManagerOut");
+		this.apiManagerIn = new Sim_port("ApiManagerIn");
 		
 		this.estabelecimentoIn = new Sim_port("EstabelecimentoIn");
 		this.estabelecimentoOut = new Sim_port("EstabelecimentoOut");
@@ -63,6 +68,8 @@ public class ApiManager extends Sim_entity {
 		add_port(this.usuarioOut);
 		add_port(this.request);
 		add_port(this.response);
+		add_port(this.apiManagerIn);
+		add_port(this.apiManagerOut);
 		
 		delay = new Sim_normal_obj("Delay", 10, 100);
         prob = new Sim_random_obj("Probability");
