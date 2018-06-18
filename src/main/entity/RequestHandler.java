@@ -1,7 +1,10 @@
-package main;
+package main.entity;
 
 import eduni.simjava.Sim_entity;
+import eduni.simjava.Sim_event;
 import eduni.simjava.Sim_port;
+import eduni.simjava.Sim_system;
+import eduni.simjava.distributions.Sim_normal_obj;
 
 public class RequestHandler extends Sim_entity {
 	
@@ -9,6 +12,8 @@ public class RequestHandler extends Sim_entity {
 	private Sim_port reentradaOut;
 	private Sim_port apiManagerIn;
 	private Sim_port bdIn;
+	private Sim_normal_obj delay;
+
 	
 
 	public RequestHandler(String name) {
@@ -24,11 +29,19 @@ public class RequestHandler extends Sim_entity {
 		add_port(this.bdIn);
 		add_port(this.apiManagerIn);
 		
+		delay = new Sim_normal_obj("Delay", 10, 100);
+        add_generator(delay);
+		
 	}
 	
 	@Override
-	public void body() {
-		
-	}
+    public void body() {
+        while (Sim_system.running()) {
+          Sim_event e = new Sim_event();
+          sim_get_next(e);
+          sim_process(delay.sample());
+          sim_completed(e);
+        }
+    }
 
 }

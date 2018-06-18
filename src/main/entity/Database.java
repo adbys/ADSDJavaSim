@@ -1,7 +1,10 @@
 package main.entity;
 
 import eduni.simjava.Sim_entity;
+import eduni.simjava.Sim_event;
 import eduni.simjava.Sim_port;
+import eduni.simjava.Sim_system;
+import eduni.simjava.distributions.Sim_normal_obj;
 
 public class Database extends Sim_entity {
 	
@@ -15,7 +18,9 @@ public class Database extends Sim_entity {
 	private Sim_port pedidoOut;
 	private Sim_port promocaoOut;
 	private Sim_port produtoOut;
-	private Sim_port usuarioOut;	
+	private Sim_port usuarioOut;
+	
+	private Sim_normal_obj delay;
 	
 	public Database(String name) {
 		super(name);
@@ -42,6 +47,19 @@ public class Database extends Sim_entity {
 		add_port(this.pedidoOut);
 		add_port(this.promocaoOut);
 		add_port(this.produtoOut);
-		add_port(this.usuarioOut);	
+		add_port(this.usuarioOut);
+		
+		delay = new Sim_normal_obj("Delay", 10, 100);
+        add_generator(delay);
 	}
+	
+	@Override
+    public void body() {
+        while (Sim_system.running()) {
+          Sim_event e = new Sim_event();
+          sim_get_next(e);
+          sim_process(delay.sample());
+          sim_completed(e);
+        }
+    }
 }
