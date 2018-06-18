@@ -60,6 +60,17 @@ public class Database extends Sim_entity {
           sim_get_next(e);
           sim_process(delay.sample());
           sim_completed(e);
+          if (e.from_port(this.estabelecimentoIn)) {
+        	  	sim_schedule(this.estabelecimentoOut, 0.0, 1);
+          } else if (e.from_port(this.pedidoIn)) {
+      	  	sim_schedule(this.pedidoOut, 0.0, 1);
+          } else if (e.from_port(this.promocaoIn)) {
+        	  	sim_schedule(this.promocaoOut, 0.0, 1);
+          } else if (e.from_port(this.produtoIn)) {
+        	  	sim_schedule(this.produtoOut, 0.0, 1);
+          } else if (e.from_port(this.usuarioIn)) {
+        	  	sim_schedule(this.usuarioOut, 0.0, 1);
+          }
         }
     }
 }

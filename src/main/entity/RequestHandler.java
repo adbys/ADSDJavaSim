@@ -41,6 +41,7 @@ public class RequestHandler extends Sim_entity {
           sim_get_next(e);
           sim_process(delay.sample());
           sim_completed(e);
+          sim_schedule(this.bdOut, 0.0, 1);
         }
     }
 

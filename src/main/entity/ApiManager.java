@@ -1,7 +1,11 @@
 package main.entity;
 
 import eduni.simjava.Sim_entity;
+import eduni.simjava.Sim_event;
 import eduni.simjava.Sim_port;
+import eduni.simjava.Sim_system;
+import eduni.simjava.distributions.Sim_normal_obj;
+import eduni.simjava.distributions.Sim_random_obj;
 
 public class ApiManager extends Sim_entity {
 	private Sim_port estabelecimentoIn;
@@ -21,6 +25,10 @@ public class ApiManager extends Sim_entity {
 	
 	private Sim_port request;
 	private Sim_port response;
+	
+	private Sim_normal_obj delay;
+	private Sim_random_obj prob;
+	
 	
 	public ApiManager(String name) {
 		super(name);
@@ -56,6 +64,37 @@ public class ApiManager extends Sim_entity {
 		add_port(this.request);
 		add_port(this.response);
 		
+		delay = new Sim_normal_obj("Delay", 10, 100);
+        prob = new Sim_random_obj("Probability");
+        add_generator(delay);
+        add_generator(prob);
+		
 	}
+	
+	@Override
+    public void body() {
+		while (Sim_system.running()) {
+            Sim_event e = new Sim_event();
+            sim_get_next(e);
+            sim_process(delay.sample());
+            sim_completed(e);
+            if (e.from_port(this.request)) {
+	            	double p = prob.sample();
+	            	if (p <= 0.35) {
+	            		sim_schedule(this.estabelecimentoOut, 0.0, 1);
+	            	} else if (p > 0.35 || p <= 0.55) {
+	            		sim_schedule(this.pedidoOut, 0.0, 1);
+	            	} else if (p > 0.55 || p <= 0.60) {
+	            		sim_schedule(this.promocaoOut, 0.0, 1);            	
+	            	} else if (p > 0.60 || p <= 0.90) {
+	            		sim_schedule(this.produtoOut, 0.0, 1);            	            	
+	            	} else {
+	            		sim_schedule(this.usuarioOut, 0.0, 1);            	            	            	
+	            	}
+            } else {
+            		//TODO: acaba
+            }
+		}
+    }
 
 }
