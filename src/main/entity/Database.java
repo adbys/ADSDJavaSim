@@ -20,6 +20,9 @@ public class Database extends Sim_entity {
 	private Sim_port produtoOut;
 	private Sim_port usuarioOut;
 	
+	private Sim_port bdIn;
+	private Sim_port bdOut;
+
 	private Sim_normal_obj delay;
 	
 	public Database(String name) {
@@ -37,6 +40,9 @@ public class Database extends Sim_entity {
 		this.produtoOut = new Sim_port("ProdutoOut");
 		this.usuarioOut = new Sim_port("UsuarioOut");
 		
+		this.bdOut = new Sim_port("BdOut");
+		this.bdIn = new Sim_port("BdIn");
+		
 		add_port(this.estabelecimentoIn);
 		add_port(this.pedidoIn);
 		add_port(this.promocaoIn);
@@ -49,7 +55,10 @@ public class Database extends Sim_entity {
 		add_port(this.produtoOut);
 		add_port(this.usuarioOut);
 		
-		delay = new Sim_normal_obj("Delay", 10, 100);
+		add_port(this.bdOut);
+		add_port(this.bdIn);
+		
+		delay = new Sim_normal_obj("Delay", 5, 1);
         add_generator(delay);
 	}
 	
@@ -57,18 +66,29 @@ public class Database extends Sim_entity {
     public void body() {
         while (Sim_system.running()) {
           Sim_event e = new Sim_event();
+        //  System.out.println("bd");
+          sim_trace(6, "DataBase processing");
           sim_get_next(e);
           sim_process(delay.sample());
           sim_completed(e);
           if (e.from_port(this.estabelecimentoIn)) {
+        	 // System.out.println(">>>>>>>>>>>estabelecimento");
+        	  	sim_trace(6, "DataBase responding to Estabelecimento Manger");
         	  	sim_schedule(this.estabelecimentoOut, 0.0, 1);
           } else if (e.from_port(this.pedidoIn)) {
+        	 // System.out.println(">>>>>>>>>>>pedido");
+	        	sim_trace(7, "DataBase responding to Pedido Manger");
       	  	sim_schedule(this.pedidoOut, 0.0, 1);
           } else if (e.from_port(this.promocaoIn)) {
+        	 // System.out.println(">>>>>>>>>>>promocao");
+        	  	sim_trace(8, "DataBase responding to Promoção Manger");
         	  	sim_schedule(this.promocaoOut, 0.0, 1);
           } else if (e.from_port(this.produtoIn)) {
+        	  	sim_trace(9, "DataBase responding to Produto Manger");
         	  	sim_schedule(this.produtoOut, 0.0, 1);
+        	  //	System.out.println(">>>>>>>>>>>usuario");
           } else if (e.from_port(this.usuarioIn)) {
+        	  	sim_trace(10, "DataBase responding to Usuario Manger");
         	  	sim_schedule(this.usuarioOut, 0.0, 1);
           }
         }
