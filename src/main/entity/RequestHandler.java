@@ -11,7 +11,6 @@ public class RequestHandler extends Sim_entity {
 	
 	private Sim_port bdOut;
 	private Sim_port bdIn;
-	private Sim_port reentradaOut;
 	private Sim_port apiManagerIn;
 	private Sim_port apiManagerOut;
 	private Sim_normal_obj delay;
@@ -57,9 +56,9 @@ public class RequestHandler extends Sim_entity {
           sim_completed(e);
           if(e.from_port(this.apiManagerIn)) {
         	  	sim_schedule(this.bdOut, 0.0, 1);
-//        	  	sim_schedule(this.apiManagerOut, 0.0, 1);
-          } //else {
-//          }
+          } else {
+        	  	sim_schedule(this.apiManagerOut, 0.0, 1);
+          }
         }
     }
 

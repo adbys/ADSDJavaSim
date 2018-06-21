@@ -7,6 +7,7 @@ public class ProcessorSubsystem {
 		
         Sim_system.initialise();
         
+        InputGenerator inputGenerator = new InputGenerator("InputGenerator");
         ApiManager apiManager = new ApiManager("ApiManager");
         RequestHandler estabelecimentoManager = new RequestHandler("EstabelecimentoManager");
         RequestHandler pedido = new RequestHandler("PedidoManager");
@@ -15,6 +16,7 @@ public class ProcessorSubsystem {
         RequestHandler usuario = new RequestHandler("UsuarioManager");
         Database bd = new Database("Bd");
         
+        Sim_system.link_ports("InputGenerator", "SystemIn", "ApiManager", "Request");
         
         Sim_system.link_ports("ApiManager", "EstabelecimentoOut", "EstabelecimentoManager", "ApiManagerIn");
         Sim_system.link_ports("ApiManager", "PedidoOut", "PedidoManager", "ApiManagerIn");
@@ -22,12 +24,17 @@ public class ProcessorSubsystem {
         Sim_system.link_ports("ApiManager", "ProdutoOut", "ProdutoManager", "ApiManagerIn");
         Sim_system.link_ports("ApiManager", "UsuarioOut", "UsuarioManager", "ApiManagerIn");
         
+        Sim_system.link_ports("EstabelecimentoManager", "ApiManagerOut", "ApiManager", "EstabelecimentoIn");
+        Sim_system.link_ports("ProdutoManager", "ApiManagerOut", "ApiManager", "ProdutoIn");
+        Sim_system.link_ports("PedidoManager", "ApiManagerOut", "ApiManager", "PedidoIn");
+        Sim_system.link_ports("PromocaoManager", "ApiManagerOut", "ApiManager", "PromocaoIn");
+        Sim_system.link_ports("UsuarioManager", "ApiManagerOut", "ApiManager", "UsuarioIn");
+        
         Sim_system.link_ports("EstabelecimentoManager", "BdOut", "Bd", "EstabelecimentoIn");
         Sim_system.link_ports("EstabelecimentoManager", "BdIn", "Bd", "EstabelecimentoOut");
         
         Sim_system.link_ports("PedidoManager", "BdOut", "Bd", "PedidoIn");
         Sim_system.link_ports("PedidoManager", "BdIn", "Bd", "PedidoOut");
-
 
         Sim_system.link_ports("PromocaoManager", "BdOut", "Bd", "PromocaoIn");
         Sim_system.link_ports("PromocaoManager", "BdIn", "Bd", "PromocaoOut");

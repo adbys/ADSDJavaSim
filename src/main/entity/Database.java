@@ -77,27 +77,23 @@ public class Database extends Sim_entity {
     public void body() {
         while (Sim_system.running()) {
           Sim_event e = new Sim_event();
-        //  System.out.println("bd");
           sim_trace(6, "DataBase processing");
           sim_get_next(e);
           sim_process(delay.sample());
           sim_completed(e);
+      
           if (e.from_port(this.estabelecimentoIn)) {
-        	 // System.out.println(">>>>>>>>>>>estabelecimento");
-        	  	sim_trace(6, "DataBase responding to Estabelecimento Manger");
+       	  	sim_trace(6, "DataBase responding to Estabelecimento Manger");
         	  	sim_schedule(this.estabelecimentoOut, 0.0, 1);
           } else if (e.from_port(this.pedidoIn)) {
-        	 // System.out.println(">>>>>>>>>>>pedido");
 	        	sim_trace(7, "DataBase responding to Pedido Manger");
       	  	sim_schedule(this.pedidoOut, 0.0, 1);
           } else if (e.from_port(this.promocaoIn)) {
-        	 // System.out.println(">>>>>>>>>>>promocao");
         	  	sim_trace(8, "DataBase responding to Promoção Manger");
         	  	sim_schedule(this.promocaoOut, 0.0, 1);
           } else if (e.from_port(this.produtoIn)) {
         	  	sim_trace(9, "DataBase responding to Produto Manger");
         	  	sim_schedule(this.produtoOut, 0.0, 1);
-        	  //	System.out.println(">>>>>>>>>>>usuario");
           } else if (e.from_port(this.usuarioIn)) {
         	  	sim_trace(10, "DataBase responding to Usuario Manger");
         	  	sim_schedule(this.usuarioOut, 0.0, 1);
