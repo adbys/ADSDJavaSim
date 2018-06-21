@@ -3,6 +3,7 @@ package main.entity;
 import eduni.simjava.Sim_entity;
 import eduni.simjava.Sim_event;
 import eduni.simjava.Sim_port;
+import eduni.simjava.Sim_stat;
 import eduni.simjava.Sim_system;
 import eduni.simjava.distributions.Sim_normal_obj;
 
@@ -24,6 +25,7 @@ public class Database extends Sim_entity {
 	private Sim_port bdOut;
 
 	private Sim_normal_obj delay;
+	private Sim_stat stat;
 	
 	public Database(String name) {
 		super(name);
@@ -60,6 +62,15 @@ public class Database extends Sim_entity {
 		
 		delay = new Sim_normal_obj("Delay", 5, 1);
         add_generator(delay);
+        
+        this.stat = new Sim_stat();
+		this.stat.add_measure(Sim_stat.ARRIVAL_RATE);
+		this.stat.add_measure(Sim_stat.WAITING_TIME);
+		this.stat.add_measure(Sim_stat.THROUGHPUT);
+		this.stat.add_measure(Sim_stat.SERVICE_TIME);
+		this.stat.add_measure(Sim_stat.QUEUE_LENGTH);
+		
+		set_stat(this.stat);
 	}
 	
 	@Override
